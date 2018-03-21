@@ -7,10 +7,15 @@ public class TextController : MonoBehaviour {
 
 	public Text text;
 
-	private enum States {bed_0, bed_1, bedroom, closet, bathroom, apartment, 
-		car, end_0, end_1, end_2};
+	private enum States {bed_0, bed_1, bedroom_0, 
+		closet_0, 
+		bathroom_0, bathroom_1,
+		apartment_0, 
+		car_0, 
+		end_0, end_1, end_2};
 	private States myState;
 	private int minutesLeft = 120;
+	private bool woman = true;
 
 	// Use this for initialization
 	void Start () {
@@ -21,26 +26,28 @@ public class TextController : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+	{
 
-		print(myState); //this is for console.
+		print (myState); //this is for console.
 
 		if (minutesLeft <= 0) {
-			end_0();
-		} else if 
-			(myState == States.bed_0){
-			bed_0();
-		} else if 
-			(myState == States.end_0){
-			end_0();
-		} else if 
-			(myState == States.bed_1){
-			bed_1();
-		} else if 
-			(myState == States.bedroom){
-			bedroom();
+			end_0 ();
+		} else if (myState == States.bed_0) {
+			bed_0 ();
+		} else if (myState == States.end_0) {
+			end_0 ();
+		} else if (myState == States.bed_1) {
+			bed_1 ();
+		} else if (myState == States.bedroom_0) {
+			bedroom_0 ();
+		} else if (myState == States.closet_0) {
+			closet_0 ();
+		} else if (myState == States.bathroom_0) {
+			bathroom_0 ();
+		} else if (myState == States.bathroom_1) {
+			bathroom_0 ();
 		}
-
 	}
 
 	void bed_0 ()  //opening lines
@@ -56,7 +63,7 @@ public class TextController : MonoBehaviour {
 		"To turn off your alarm completely and go back to sleep, press S.";
 
 		if (Input.GetKeyDown(KeyCode.W)) {
-			myState = States.bedroom;
+			myState = States.bedroom_0;
 			minutesLeft -= 1;
 		} else if (Input.GetKeyDown(KeyCode.Space)) {
 			myState = States.bed_1;
@@ -78,7 +85,7 @@ public class TextController : MonoBehaviour {
 		"To turn off your alarm completely and go back to sleep, press S.";
 
 		if (Input.GetKeyDown(KeyCode.W)) {
-			myState = States.bedroom;
+			myState = States.bedroom_0;
 			minutesLeft -= 1;
 		} else if (Input.GetKeyDown(KeyCode.Space)) {
 			myState = States.bed_1;
@@ -108,7 +115,7 @@ public class TextController : MonoBehaviour {
 
 	}
 
-	void bedroom ()  //get out of bed
+	void bedroom_0 ()  //get out of bed
 	{
 		text.text = "You get out bed, excited to start the day. " +
 		"There's nothing in your bedroom that you need right now. " +
@@ -120,18 +127,58 @@ public class TextController : MonoBehaviour {
 		"A to enter the apartment.";
 
 		if (Input.GetKeyDown(KeyCode.C)) {
-			myState = States.closet;
+			myState = States.closet_0;
 			minutesLeft -= 1;
 		} else if (Input.GetKeyDown(KeyCode.B)) {
-			myState = States.bathroom;
+			myState = States.bathroom_0;
 			minutesLeft -= 1;
 		} else if (Input.GetKeyDown(KeyCode.A)) {
-			myState = States.apartment;
+			myState = States.apartment_0;
 			minutesLeft -= 1;
 		}
 	}
 
 	//hmm, would better code put the substraction in the States if/else section?
 	//you only have to write it once per state that way...
+
+	void closet_0 ()  //go to closet for the first time
+	{
+		text.text = "You open your closet and admire your wedding clothes. " +
+		"But you decide to clean yourself up before getting dressed. " +
+		"So you close the closet, for now. " +
+		"You have " + minutesLeft + " minutes until the ceremony. " +
+		"What will you do now?\n\n" +
+		"Press C to open the closet, B to use the bathroom, or " +
+		"A to enter the apartment.";
+
+		if (Input.GetKeyDown(KeyCode.C)) {
+			myState = States.closet_0;
+			minutesLeft -= 1;
+		} else if (Input.GetKeyDown(KeyCode.B)) {
+			myState = States.bathroom_0;
+			minutesLeft -= 1;
+		} else if (Input.GetKeyDown(KeyCode.A)) {
+			myState = States.apartment_0;
+			minutesLeft -= 1;
+		}
+	}
+
+	void bathroom_0 ()  //go to bathroom for the first time. selects player's sex.
+	{
+		text.text = "You step into the bathroom. After getting 8 hours " +
+		"of sleep, you really need to pee!\n\n" +
+		"Press W to sit down, or M to remain standing.";
+
+		if (Input.GetKeyDown(KeyCode.W)) {
+			myState = States.bathroom_1;
+			minutesLeft -= 1;
+			woman = true;
+		} else if (Input.GetKeyDown(KeyCode.M)) {
+			myState = States.bathroom_1;
+			minutesLeft -= 1;
+			woman = false;
+		} 
+	}
+
 
 }
