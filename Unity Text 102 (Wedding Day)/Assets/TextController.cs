@@ -7,9 +7,11 @@ public class TextController : MonoBehaviour {
 
 	public Text text;
 
-	private enum States {bed_0, bed_1, bedroom_0, 
+	private enum States {bed_0, bed_1, bedroom_0, bedroom_1, 
 		closet_0, 
-		bathroom_0, bathroom_1,
+		bathroom_0, bathroom_1, bathroom_2, 
+		shave_woman, shave_man, makeup_woman, makeup_man,
+		sh_makeup_woman, sh_makeup_man, natural,
 		apartment_0, 
 		car_0, 
 		end_0, end_1, end_2};
@@ -36,6 +38,9 @@ public class TextController : MonoBehaviour {
 
 		if (minutesLeft <= 0) {
 			end_0 ();
+			//you need to change this. time running out
+			//doesn't always happen in your bed.
+			//make one for oversleeping, one (or more) for other misses...
 		} else if (myState == States.bed_0) {
 			bed_0 ();
 		} else if (myState == States.end_0) {
@@ -49,7 +54,25 @@ public class TextController : MonoBehaviour {
 		} else if (myState == States.bathroom_0) {
 			bathroom_0 ();
 		} else if (myState == States.bathroom_1) {
-			bathroom_0 ();
+			bathroom_1 ();
+		} else if (myState == States.bathroom_2) {
+			bathroom_2 ();
+		} else if (myState == States.shave_woman) {
+			shave_woman ();
+		} else if (myState == States.shave_man) {
+			shave_man ();
+		} else if (myState == States.makeup_woman) {
+			makeup_woman ();
+		} else if (myState == States.makeup_man) {
+			makeup_man ();
+		} else if (myState == States.sh_makeup_woman) {
+			sh_makeup_woman ();
+		} else if (myState == States.sh_makeup_man) {
+			sh_makeup_man ();
+		} else if (myState == States.natural) {
+			natural ();
+		} else if (myState == States.bedroom_1) {
+			bedroom_1 ();
 		}
 	}
 
@@ -185,7 +208,8 @@ public class TextController : MonoBehaviour {
 
 	//think about whether you want two separate tracks for woman/man
 	//or just one track, with if statements where appropriate
-	void woman_bathroom_0() //if you sat to pee/denotes woman player
+
+	void bathroom_1()
 	{
 		text.text = "*Tinkling sound*\n\n" +
 		"*Flushing toilet sound*\n\n" +
@@ -194,12 +218,170 @@ public class TextController : MonoBehaviour {
 		"Press S to shower, or B to take a bubble bath";
 
 		if (Input.GetKeyDown(KeyCode.S)) {
-			myState = States.woman.bathroom_1;
+			myState = States.bathroom_2;
 			minutesLeft -= 5;
 		} else if (Input.GetKeyDown(KeyCode.B)) {
-			myState = States.woman.bathroom_2;
+			myState = States.bathroom_2;
 			minutesLeft -= 30;
 		} 
 	}
 
+	void bathroom_2 ()
+	{
+		text.text = "You're all clean, but the bathing took " +
+		"a bit of time. You have " + minutesLeft + " minutes left " +
+		"before the ceremony. Still, you want to look your best.\n\n" +
+		"Press S to shave, M to put on make-up, B to do both, " +
+		"or N to remain natural.";
+
+		if (Input.GetKeyDown (KeyCode.S)) {
+			if (woman) {
+				myState = States.shave_woman;
+				minutesLeft -= 5;
+			} else {
+				myState = States.shave_man;
+				minutesLeft -= 5;
+			}
+		} 
+
+		else if (Input.GetKeyDown(KeyCode.M)) {
+			if (woman) {
+				myState = States.makeup_woman;
+				minutesLeft -= 10;
+			} else {
+				myState = States.makeup_man;
+				minutesLeft -= 3;
+			}
+		} 
+
+		else if (Input.GetKeyDown(KeyCode.B)) {
+			if (woman) {
+				myState = States.sh_makeup_woman;
+				minutesLeft -= 15;
+			} else {
+				myState = States.sh_makeup_man;
+				minutesLeft -= 8;
+			}
+		} 
+
+		else if (Input.GetKeyDown(KeyCode.N)) {
+			myState = States.natural;
+			minutesLeft -= 1;
+		} 
+	}
+
+	void shave_woman ()
+	{
+		text.text = "*Tinkling sound*\n\n" +
+		"*Flushing toilet sound*\n\n" +
+		"Ah, that's better! Time to wash up. Do you want to take " +
+		"a quick shower or a long bubble bath?\n\n" +
+		"Press B to return to your bedroom.";
+
+		if (Input.GetKeyDown (KeyCode.B)) {
+			myState = States.bedroom_1;
+			minutesLeft -= 1;
+		}
+	}
+
+	void shave_man ()
+	{
+		text.text = "*Tinkling sound*\n\n" +
+		"*Flushing toilet sound*\n\n" +
+		"Ah, that's better! Time to wash up. Do you want to take " +
+		"a quick shower or a long bubble bath?\n\n" +
+		"Press B to return to your bedroom.";
+
+		if (Input.GetKeyDown (KeyCode.B)) {
+			myState = States.bedroom_1;
+			minutesLeft -= 1;
+		}
+
+	}
+
+	void makeup_woman ()
+	{
+		text.text = "*Tinkling sound*\n\n" +
+		"*Flushing toilet sound*\n\n" +
+		"Ah, that's better! Time to wash up. Do you want to take " +
+		"a quick shower or a long bubble bath?\n\n" +
+		"Press B to return to your bedroom.";
+
+		if (Input.GetKeyDown (KeyCode.B)) {
+			myState = States.bedroom_1;
+			minutesLeft -= 1;
+		}
+
+	}
+
+	void makeup_man ()
+	{
+		text.text = "*Tinkling sound*\n\n" +
+		"*Flushing toilet sound*\n\n" +
+		"Ah, that's better! Time to wash up. Do you want to take " +
+		"a quick shower or a long bubble bath?\n\n" +
+		"Press B to return to your bedroom.";
+
+		if (Input.GetKeyDown (KeyCode.B)) {
+			myState = States.bedroom_1;
+			minutesLeft -= 1;
+		}
+
+	}
+
+	void sh_makeup_woman ()
+	{
+		text.text = "*Tinkling sound*\n\n" +
+		"*Flushing toilet sound*\n\n" +
+		"Ah, that's better! Time to wash up. Do you want to take " +
+		"a quick shower or a long bubble bath?\n\n" +
+		"Press B to return to your bedroom.";
+
+		if (Input.GetKeyDown (KeyCode.B)) {
+			myState = States.bedroom_1;
+			minutesLeft -= 1;
+		}
+
+	}
+
+	void sh_makeup_man ()
+	{
+		text.text = "*Tinkling sound*\n\n" +
+		"*Flushing toilet sound*\n\n" +
+		"Ah, that's better! Time to wash up. Do you want to take " +
+		"a quick shower or a long bubble bath?\n\n" +
+		"Press B to return to your bedroom.";
+
+		if (Input.GetKeyDown (KeyCode.B)) {
+			myState = States.bedroom_1;
+			minutesLeft -= 1;
+		}
+
+	}
+
+	void natural ()
+	{
+		text.text = "*Tinkling sound*\n\n" +
+		"*Flushing toilet sound*\n\n" +
+		"Ah, that's better! Time to wash up. Do you want to take " +
+		"a quick shower or a long bubble bath?\n\n" +
+		"Press B to return to your bedroom.";
+
+		if (Input.GetKeyDown (KeyCode.B)) {
+			myState = States.bedroom_1;
+			minutesLeft -= 1;
+		}
+	}
+
+	void bedroom_1 ()
+	{
+		text.text = "You return to your bedroom. You're all " +
+		"done with your abulutions. You have" + minutesLeft + 
+		" minutes left before the ceremony. " +
+		"What will you do next?\n\n" +
+		"Press C to enter your closet. Press A to enter the " +
+		"rest of your apartment.";
+
+		//if statements here....
+	}
 }
