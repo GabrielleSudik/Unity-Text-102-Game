@@ -8,11 +8,12 @@ public class TextController : MonoBehaviour {
 	public Text text;
 
 	private enum States {bed_0, bed_1, bedroom_0, bedroom_1, 
-		closet_0, 
+		closet_0, closet_1, 
 		bathroom_0, bathroom_1, bathroom_2, 
 		shave_woman, shave_man, makeup_woman, makeup_man,
 		sh_makeup_woman, sh_makeup_man, natural,
-		apartment_0, 
+		gown, tux,
+		apartment_0, apartment_1,
 		car_0, 
 		end_0, end_1, end_2};
 	private States myState;
@@ -73,6 +74,14 @@ public class TextController : MonoBehaviour {
 			natural ();
 		} else if (myState == States.bedroom_1) {
 			bedroom_1 ();
+		} else if (myState == States.closet_1) {
+			closet_1 ();
+		} else if (myState == States.apartment_1) {
+			apartment_1 ();
+		} else if (myState == States.gown) {
+			gown ();
+		} else if (myState == States.tux) {
+			tux ();
 		}
 	}
 
@@ -172,7 +181,7 @@ public class TextController : MonoBehaviour {
 		text.text = "You open your closet and admire your wedding clothes. " +
 		"But you decide to clean yourself up before getting dressed. " +
 		"So you close the closet, for now. " +
-		"You have " + minutesLeft + " minutes until the ceremony. " +
+		//"You have " + minutesLeft + " minutes until the ceremony. " +
 		"What will you do now?\n\n" +
 		"Press C to open the closet, B to use the bathroom, or " +
 		"A to enter the apartment.";
@@ -206,12 +215,31 @@ public class TextController : MonoBehaviour {
 		} 
 	}
 
+	void apartment_0 ()
+	{
+		text.text = "You open your bedroom door to step into your  " +
+		"main living area. But since you're already near your bathroom " +
+		"and wedding clothes, you decide to get ready for the day first, " +
+		"and you remain in your bedroom." +
+		//"You have " + minutesLeft + " minutes until the ceremony. " +
+		"What will you do now?\n\n" +
+		"Press C to open the closet, or B to use the bathroom.";
+
+		if (Input.GetKeyDown(KeyCode.C)) {
+			myState = States.closet_0;
+			minutesLeft -= 1;
+		} else if (Input.GetKeyDown(KeyCode.B)) {
+			myState = States.bathroom_0;
+			minutesLeft -= 1;
+		} 
+	}
+
 	//think about whether you want two separate tracks for woman/man
 	//or just one track, with if statements where appropriate
 
 	void bathroom_1()
 	{
-		text.text = "*Tinkling sound*\n\n" +
+		text.text = "*Tinkling sound*\t" +
 		"*Flushing toilet sound*\n\n" +
 		"Ah, that's better! Time to wash up. Do you want to take " +
 		"a quick shower or a long bubble bath?\n\n" +
@@ -240,7 +268,7 @@ public class TextController : MonoBehaviour {
 				minutesLeft -= 5;
 			} else {
 				myState = States.shave_man;
-				minutesLeft -= 5;
+				minutesLeft -= 8;
 			}
 		} 
 
@@ -260,7 +288,7 @@ public class TextController : MonoBehaviour {
 				minutesLeft -= 15;
 			} else {
 				myState = States.sh_makeup_man;
-				minutesLeft -= 8;
+				minutesLeft -= 11;
 			}
 		} 
 
@@ -272,10 +300,10 @@ public class TextController : MonoBehaviour {
 
 	void shave_woman ()
 	{
-		text.text = "*Tinkling sound*\n\n" +
-		"*Flushing toilet sound*\n\n" +
-		"Ah, that's better! Time to wash up. Do you want to take " +
-		"a quick shower or a long bubble bath?\n\n" +
+		text.text = "You lather up all the areas you typially " +
+		"shave and you get to work.\n\n" +
+		"There now... All smooth and shiny!\n\n" +
+		"You decide you're done gromming for today." +
 		"Press B to return to your bedroom.";
 
 		if (Input.GetKeyDown (KeyCode.B)) {
@@ -286,10 +314,11 @@ public class TextController : MonoBehaviour {
 
 	void shave_man ()
 	{
-		text.text = "*Tinkling sound*\n\n" +
-		"*Flushing toilet sound*\n\n" +
-		"Ah, that's better! Time to wash up. Do you want to take " +
-		"a quick shower or a long bubble bath?\n\n" +
+		text.text = "You use your electric razor for some " +
+		"touch-ups here and there, and lather up your face " +
+		"for a very close shave. You take your time, as you " +
+		"don't want to walk down the aisle with toilet paper on " +
+		"your face. The effort pays off, and you look very clean-cut.\n\n" +
 		"Press B to return to your bedroom.";
 
 		if (Input.GetKeyDown (KeyCode.B)) {
@@ -301,10 +330,10 @@ public class TextController : MonoBehaviour {
 
 	void makeup_woman ()
 	{
-		text.text = "*Tinkling sound*\n\n" +
-		"*Flushing toilet sound*\n\n" +
-		"Ah, that's better! Time to wash up. Do you want to take " +
-		"a quick shower or a long bubble bath?\n\n" +
+		text.text = "You start with foundation, then some concealer. " +
+		"You add some blush, some eyeshadow, and slightly darken your " +
+		"brows with a pencil. You finish off with some mascara and lipstick " +
+		"then give your hair a quick style. You look beautiful!\n\n" +
 		"Press B to return to your bedroom.";
 
 		if (Input.GetKeyDown (KeyCode.B)) {
@@ -316,10 +345,10 @@ public class TextController : MonoBehaviour {
 
 	void makeup_man ()
 	{
-		text.text = "*Tinkling sound*\n\n" +
-		"*Flushing toilet sound*\n\n" +
-		"Ah, that's better! Time to wash up. Do you want to take " +
-		"a quick shower or a long bubble bath?\n\n" +
+		text.text = "Yeah, you're a dude, but you know that " +
+		"a bit of color makes you look even hotter than usual. " +
+		"So you dab on tiny bits of concealer to even out your skin " +
+		"tone, then finish up with some guyliner. Rawr!\n\n" +
 		"Press B to return to your bedroom.";
 
 		if (Input.GetKeyDown (KeyCode.B)) {
@@ -331,10 +360,10 @@ public class TextController : MonoBehaviour {
 
 	void sh_makeup_woman ()
 	{
-		text.text = "*Tinkling sound*\n\n" +
-		"*Flushing toilet sound*\n\n" +
-		"Ah, that's better! Time to wash up. Do you want to take " +
-		"a quick shower or a long bubble bath?\n\n" +
+		text.text = "You spend a few minutes shaving all the usual " +
+		"places until your skin is smooth and shiney. You spend a few more " +
+		"minutes applying makeup and styling your hair. The effort " +
+		"pays off -- you are clean-cut and beautiful!\n\n" +
 		"Press B to return to your bedroom.";
 
 		if (Input.GetKeyDown (KeyCode.B)) {
@@ -346,10 +375,11 @@ public class TextController : MonoBehaviour {
 
 	void sh_makeup_man ()
 	{
-		text.text = "*Tinkling sound*\n\n" +
-		"*Flushing toilet sound*\n\n" +
-		"Ah, that's better! Time to wash up. Do you want to take " +
-		"a quick shower or a long bubble bath?\n\n" +
+		text.text = "The metrosexual look works well on you, so " +
+		"you first use your electric razor to clean up around the edges. " +
+		"You then carefully use a blade to keep the stubble from showing. " +
+		"Finally, you dab on just a bit of concealer and a trace of " +
+		"guyliner. Queer Eye would approve!\n\n" +
 		"Press B to return to your bedroom.";
 
 		if (Input.GetKeyDown (KeyCode.B)) {
@@ -361,10 +391,10 @@ public class TextController : MonoBehaviour {
 
 	void natural ()
 	{
-		text.text = "*Tinkling sound*\n\n" +
-		"*Flushing toilet sound*\n\n" +
-		"Ah, that's better! Time to wash up. Do you want to take " +
-		"a quick shower or a long bubble bath?\n\n" +
+		text.text = "You decide -- quite correctly -- that the " +
+		"whole-body natural look works best for you. In addition " +
+		"to signalling your earth-loving nature, you save a lot of money in " +
+		"cosmetics, not to mention grooming time.\n\n" +
 		"Press B to return to your bedroom.";
 
 		if (Input.GetKeyDown (KeyCode.B)) {
@@ -382,6 +412,38 @@ public class TextController : MonoBehaviour {
 		"Press C to enter your closet. Press A to enter the " +
 		"rest of your apartment.";
 
-		//if statements here....
+		if (Input.GetKeyDown (KeyCode.C)) {
+			myState = States.closet_1;
+			minutesLeft -= 10;
+		} else if (Input.GetKeyDown (KeyCode.A)) {
+			myState = States.apartment_1;
+			minutesLeft -= 1;
+		}
+	}
+
+	void closet_1 ()
+	{
+		if (woman) {
+			myState = States.gown;
+			minutesLeft -= 10;
+		} else {
+			myState = States.tux;
+			minutesLeft -= 10;
+		} 
+	}
+
+	void gown(){
+		text.text= "You put on your gown (and finish this later)";
+	}
+
+	void tux ()
+	{
+		text.text = "You put on your tux (and finish the rest later)";
+	}
+
+	void apartment_1 ()
+	{
+	text.text = "You glance down, realize you're still naked from the " +
+	"morning's wash, and decide to dress before doing anything else.";
 	}
 }
