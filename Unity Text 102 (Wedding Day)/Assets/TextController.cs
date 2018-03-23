@@ -17,6 +17,9 @@ public class TextController : MonoBehaviour {
 	private int minutesLeft = 120;
 	private bool woman = true;
 
+	//hmm... better to lay out states for woman and man,
+	//or lay out states but have man/woman be if statements within each method?
+
 	// Use this for initialization
 	void Start () {
 
@@ -118,7 +121,7 @@ public class TextController : MonoBehaviour {
 	void bedroom_0 ()  //get out of bed
 	{
 		text.text = "You get out bed, excited to start the day. " +
-		"There's nothing in your bedroom that you need right now. " +
+		"There's not much in your bedroom that you need right now. " +
 		"From your bedroom, you can enter your closet, your bathroom, or " +
 		"the rest of your apartment. " +
 		"You have " + minutesLeft + " minutes until the ceremony. " +
@@ -180,5 +183,23 @@ public class TextController : MonoBehaviour {
 		} 
 	}
 
+	//think about whether you want two separate tracks for woman/man
+	//or just one track, with if statements where appropriate
+	void woman_bathroom_0() //if you sat to pee/denotes woman player
+	{
+		text.text = "*Tinkling sound*\n\n" +
+		"*Flushing toilet sound*\n\n" +
+		"Ah, that's better! Time to wash up. Do you want to take " +
+		"a quick shower or a long bubble bath?\n\n" +
+		"Press S to shower, or B to take a bubble bath";
+
+		if (Input.GetKeyDown(KeyCode.S)) {
+			myState = States.woman.bathroom_1;
+			minutesLeft -= 5;
+		} else if (Input.GetKeyDown(KeyCode.B)) {
+			myState = States.woman.bathroom_2;
+			minutesLeft -= 30;
+		} 
+	}
 
 }
