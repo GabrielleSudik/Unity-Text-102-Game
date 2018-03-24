@@ -13,7 +13,7 @@ public class TextController : MonoBehaviour {
 		shave_woman, shave_man, makeup_woman, makeup_man,
 		sh_makeup_woman, sh_makeup_man, natural,
 		gown, tux,
-		apartment_0, apartment_1,
+		apartment_0, apartment_1, apartment_2, 
 		car_0, 
 		end_0, end_1, end_2};
 	private States myState;
@@ -82,6 +82,8 @@ public class TextController : MonoBehaviour {
 			gown ();
 		} else if (myState == States.tux) {
 			tux ();
+		}  else if (myState == States.apartment_2) {
+			apartment_2 ();
 		}
 	}
 
@@ -409,7 +411,7 @@ public class TextController : MonoBehaviour {
 		"done with your abulutions. You have" + minutesLeft + 
 		" minutes left before the ceremony. " +
 		"What will you do next?\n\n" +
-		"Press C to enter your closet. Press A to enter the " +
+		"Press C to open your closet. Press A to enter the " +
 		"rest of your apartment.";
 
 		if (Input.GetKeyDown (KeyCode.C)) {
@@ -433,17 +435,60 @@ public class TextController : MonoBehaviour {
 	}
 
 	void gown(){
-		text.text= "You put on your gown (and finish this later)";
+		text.text= "You open your closet door and admire a beautiful " +
+		"white gown, along with shoes, gloves, a veil and matching beaded " +
+		"purse. You dress as quickly as possible, but there are a lot of " +
+		"buttons, so it takes a few minutes. Finally, you are dressed!\n\n" +
+		"Press A to move to the main living area of your apartment.";	
+
+		if (Input.GetKeyDown (KeyCode.A)) {
+			myState = States.apartment_2;
+			minutesLeft -= 10;
+		}		
 	}
 
 	void tux ()
 	{
-		text.text = "You put on your tux (and finish the rest later)";
+		text.text = "You open your closet door and remove a stylish tux, " +
+		"along with all of its accessories. You spend several minutes " +
+		"getting dressed and finish your ensemble with a jaunty pocket " +
+		"handkerchief, in your wedding's theme color (which is 'white').\n\n" +
+		"Press A to move to the main living area of your apartment.";	
+
+		if (Input.GetKeyDown (KeyCode.A)) {
+			myState = States.apartment_2;
+			minutesLeft -= 10;
+		}
 	}
 
 	void apartment_1 ()
 	{
-	text.text = "You glance down, realize you're still naked from the " +
-	"morning's wash, and decide to dress before doing anything else.";
+		text.text = "You glance down, realize you're still naked, " +
+		"and decide to dress before doing anything else.\n\n" +
+		"Press C to look inside your closet instead.";
+
+		if (Input.GetKeyDown(KeyCode.C)){
+			myState = States.closet_1;
+		}
+	}
+
+	//consider an option to let people leave the house naked...
+
+	void apartment_2 ()
+	{
+		text.text = "You step into the main area of your apartment, a " +
+		"combined living-dining-kitchen great room. While it IS a great " +
+		"room, you'll be giving it up to move into your spouse's house " +
+		"after the honeymoon. You worry you'll miss your solitude...\n\n" +
+		"To make yourself a quick breakfast, press K. To relax with some " +
+		"pre-wedding Wii, press W. To head to the church, press C.";
+
+		if (Input.GetKeyDown(KeyCode.K)){
+			myState = States.closet_1;
+		} else if (Input.GetKeyDown(KeyCode.W)){
+			myState = States.closet_1;
+		} else if (Input.GetKeyDown(KeyCode.C)){
+			myState = States.closet_1;
+		}
 	}
 }
