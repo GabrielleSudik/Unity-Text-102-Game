@@ -14,11 +14,13 @@ public class TextController : MonoBehaviour {
 		sh_makeup_woman, sh_makeup_man, natural,
 		gown, tux,
 		apartment_0, apartment_1, apartment_2, 
+		breakfast_0, exit_0, video_0, video_1, 
 		car_0, 
 		end_0, end_1, end_2};
 	private States myState;
 	private int minutesLeft = 120;
 	private bool woman = true;
+	private bool hungry = true;
 
 	//hmm... better to lay out states for woman and man,
 	//or lay out states but have man/woman be if statements within each method?
@@ -84,9 +86,19 @@ public class TextController : MonoBehaviour {
 			tux ();
 		}  else if (myState == States.apartment_2) {
 			apartment_2 ();
+		}  else if (myState == States.breakfast_0) {
+			breakfast_0 ();
+		}  else if (myState == States.exit_0) {
+			exit_0 ();
+		}  else if (myState == States.video_0) {
+			video_0 ();
+		} else if (myState == States.video_1) {
+			video_1 ();
 		}
 	}
 
+
+	//breakfast_0, exit_0, video_0,
 	void bed_0 ()  //opening lines
 	{
 
@@ -469,6 +481,7 @@ public class TextController : MonoBehaviour {
 
 		if (Input.GetKeyDown(KeyCode.C)){
 			myState = States.closet_1;
+			minutesLeft -= 1;
 		}
 	}
 
@@ -480,15 +493,87 @@ public class TextController : MonoBehaviour {
 		"combined living-dining-kitchen great room. While it IS a great " +
 		"room, you'll be giving it up to move into your spouse's house " +
 		"after the honeymoon. You worry you'll miss your solitude...\n\n" +
+		"You have " + minutesLeft+ " minutes left before the ceremony.\n\n" +
 		"To make yourself a quick breakfast, press K. To relax with some " +
-		"pre-wedding Wii, press W. To head to the church, press C.";
+		"videogame time, press V. To head out the door, press E.";
 
 		if (Input.GetKeyDown(KeyCode.K)){
-			myState = States.closet_1;
-		} else if (Input.GetKeyDown(KeyCode.W)){
-			myState = States.closet_1;
-		} else if (Input.GetKeyDown(KeyCode.C)){
-			myState = States.closet_1;
+			myState = States.breakfast_0;
+			hungry = false;
+			minutesLeft -= 10;
+		} else if (Input.GetKeyDown(KeyCode.V)){
+			myState = States.video_0;
+			minutesLeft -= 15;
+		} else if (Input.GetKeyDown(KeyCode.E)){
+			myState = States.exit_0;
+			minutesLeft -= 1;
 		}
+	}
+
+	void breakfast_0()
+	{
+		text.text = "You decide to put a little food in your belly before " +
+		"leaving. You make a shot of espresso and heat up a Pop-Tart. " +
+		"It's just enough food to give you energy but not slow you down.\n\n" +
+		"To relax with some " +
+		"videogame time, press V. To head out the door, press E.";
+
+		if (Input.GetKeyDown(KeyCode.V)){
+			myState = States.video_0;
+			minutesLeft -= 15;
+		} else if (Input.GetKeyDown(KeyCode.E)){
+			myState = States.exit_0;
+			minutesLeft -= 1;
+		}
+	}
+
+	void video_0()
+	{
+		text.text = "Knowing you might not get to enjoy your favorite hobby " +
+		"for a few weeks, you load up a quick game of Civilization V. Next thing you " +
+		"know, 15 minutes have passed! You have " + minutesLeft + " minutes " +
+		"left until the ceremony.\n\n" +
+		"If you've had your gaming fix, press E to head out the door. " +
+		"If you want to play just one more turn, press V.";
+
+		if (Input.GetKeyDown(KeyCode.V)){
+			myState = States.video_1;
+			minutesLeft -= 5;
+		} else if (Input.GetKeyDown(KeyCode.E)){
+			myState = States.exit_0;
+			minutesLeft -= 1;
+		}
+	}
+
+	void video_1() //just 5 more minutes lol
+	{
+		text.text = "You tell yourself 'just one more turn'... " +
+		"But as you know, one more turn takes 5 minutes. " +
+		"You have " + minutesLeft + " minutes " +
+		"left until the ceremony.\n\n" +
+		"If you've had your gaming fix, press E to head out the door. " +
+		"If you want to play just one more turn -- seriously, only one " +
+		"more turn, you promise -- press V.";
+
+		if (Input.GetKeyDown(KeyCode.V)){
+			myState = States.video_1;
+			minutesLeft -= 5;
+		} else if (Input.GetKeyDown(KeyCode.E)){
+			myState = States.exit_0;
+			minutesLeft -= 1;
+		}
+	}
+
+	void exit_0()
+	{
+		text.text = "You grab your already-packed honeymoon bag, step outside, " +
+		"and lock your apartment door. You could drive your car to the church, or " +
+		"catch the bus. The car is probably quicker, but the bus will be more " +
+		"relaxing. You have " + minutesLeft + " minutes left until the ceremony.\n\n" +
+		"Press C to drive your car, or press B to ride the bus.";
+
+		//need if statements
+		//don't forget time
+		//don't forget dealing with hunger.
 	}
 }
