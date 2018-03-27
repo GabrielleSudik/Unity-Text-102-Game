@@ -7,7 +7,9 @@ public class TextController : MonoBehaviour {
 
 	public Text text;
 
-	private enum States {bed_0, bed_1, bedroom_0, bedroom_1, 
+	private enum States {
+		bed_0, bed_1, 
+		bedroom_0, bedroom_1, 
 		closet_0, closet_1, 
 		bathroom_0, bathroom_1, bathroom_2, 
 		shave_woman, shave_man, makeup_woman, makeup_man,
@@ -15,7 +17,7 @@ public class TextController : MonoBehaviour {
 		gown, tux,
 		apartment_0, apartment_1, apartment_2, 
 		breakfast_0, exit_0, video_0, video_1, 
-		car_0, 
+		car_0, bus_0, 
 		end_0, end_1, end_2};
 	private States myState;
 	private int minutesLeft = 120;
@@ -39,12 +41,13 @@ public class TextController : MonoBehaviour {
 
 		print (myState); //this is for console.
 
-		if (minutesLeft <= 0) {
+		//make sure earlier if statements are about running out of time, and in the right place
+
+		if (minutesLeft <= 0 && (myState == States.bed_0 || myState == States.bed_1)) {
 			end_0 ();
-			//you need to change this. time running out
-			//doesn't always happen in your bed.
-			//make one for oversleeping, one (or more) for other misses...
-		} else if (myState == States.bed_0) {
+		} else if (minutesLeft <= 0 && (myState != States.bed_0 && myState != States.bed_1)) {
+			end_1 ();
+		}  else if (myState == States.bed_0) {
 			bed_0 ();
 		} else if (myState == States.end_0) {
 			end_0 ();
@@ -94,7 +97,9 @@ public class TextController : MonoBehaviour {
 			video_0 ();
 		} else if (myState == States.video_1) {
 			video_1 ();
-		}
+		} else if (myState == States.end_1) {
+			end_1 ();
+		} 
 	}
 
 
@@ -564,13 +569,30 @@ public class TextController : MonoBehaviour {
 		}
 	}
 
-	void exit_0()
+	void exit_0()  //leaving the apartment
 	{
 		text.text = "You grab your already-packed honeymoon bag, step outside, " +
 		"and lock your apartment door. You could drive your car to the church, or " +
 		"catch the bus. The car is probably quicker, but the bus will be more " +
 		"relaxing. You have " + minutesLeft + " minutes left until the ceremony.\n\n" +
 		"Press C to drive your car, or press B to ride the bus.";
+
+		//need if statements
+		//don't forget time
+		//don't forget dealing with hunger.
+	}
+
+
+	void end_1() //shoot. need to make this work between rising from bed and leaving apartment
+		//maybe need to make another enum list of general locations (home, transport, coffee shop, whatever)
+		//to implement the correct ending
+	{
+		text.text = "You hear an unexpected banging at the door, followed by " +
+		"loud and angry voices.\n\n" +
+		"OH MY GOD IS THAT THE TIME!?!?!.\n\n" +
+		"You missed the ceremony because of all " +
+		"your dawdling. You grab your honeymoon tickets, climb out a window, and run away.\n\n" +
+		"Maybe you'll find true love next time. Press P to replay.";
 
 		//need if statements
 		//don't forget time
