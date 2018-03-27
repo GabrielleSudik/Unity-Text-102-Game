@@ -7,7 +7,8 @@ public class TextController : MonoBehaviour {
 
 	public Text text;
 
-	private enum States {
+	private enum States //this is for each location and status
+	{
 		bed_0, bed_1, 
 		bedroom_0, bedroom_1, 
 		closet_0, closet_1, 
@@ -19,7 +20,13 @@ public class TextController : MonoBehaviour {
 		breakfast_0, exit_0, video_0, video_1, 
 		car_0, bus_0, 
 		end_0, end_1, end_2};
+
+	private enum Locations //this is general location for running out of time endings
+	{
+		in_bed, in_apartment, out_apartment};
+
 	private States myState;
+	private Locations myLocation;
 	private int minutesLeft = 120;
 	private bool woman = true;
 	private bool hungry = true;
@@ -43,11 +50,13 @@ public class TextController : MonoBehaviour {
 
 		//make sure earlier if statements are about running out of time, and in the right place
 
-		if (minutesLeft <= 0 && (myState == States.bed_0 || myState == States.bed_1)) {
+		if (minutesLeft <= 0 && (myLocation == Locations.in_bed)) {
 			end_0 ();
-		} else if (minutesLeft <= 0 && (myState != States.bed_0 && myState != States.bed_1)) {
+		} else if (minutesLeft <= 0 && myLocation == Locations.in_apartment) {
 			end_1 ();
-		}  else if (myState == States.bed_0) {
+		} else if (minutesLeft <= 0 && myLocation == Locations.out_apartment) {
+			end_2 ();
+		} else if (myState == States.bed_0) {
 			bed_0 ();
 		} else if (myState == States.end_0) {
 			end_0 ();
@@ -99,6 +108,12 @@ public class TextController : MonoBehaviour {
 			video_1 ();
 		} else if (myState == States.end_1) {
 			end_1 ();
+		} else if (myState == States.car_0) {
+			end_1 ();
+		} else if (myState == States.bus_0) {
+			end_1 ();
+		} else if (myState == States.end_1) {
+			end_2 ();
 		} 
 	}
 
@@ -106,6 +121,7 @@ public class TextController : MonoBehaviour {
 	//breakfast_0, exit_0, video_0,
 	void bed_0 ()  //opening lines
 	{
+		myLocation = Locations.in_bed;
 
 		text.text = "You wake abruptly, your alarm clock blaring at you. " +
 		"You quickly remember that today is your wedding day! " +
@@ -130,6 +146,7 @@ public class TextController : MonoBehaviour {
 
 	void bed_1 ()  //if snooze
 	{
+		myLocation = Locations.in_bed;
 
 		text.text = "Your alarm rings again." +
 		"You have " + minutesLeft + " minutes until the ceremony. " +
@@ -163,14 +180,16 @@ public class TextController : MonoBehaviour {
 			"Press P to try again.";
 
 		if (Input.GetKeyDown(KeyCode.P)) {
-			myState = States.bed_0;
 			minutesLeft = 120;
+			myState = States.bed_0;
 		}
 
 	}
 
 	void bedroom_0 ()  //get out of bed
 	{
+		myLocation = Locations.in_apartment;
+
 		text.text = "You get out bed, excited to start the day. " +
 		"There's not much in your bedroom that you need right now. " +
 		"From your bedroom, you can enter your closet, your bathroom, or " +
@@ -197,6 +216,8 @@ public class TextController : MonoBehaviour {
 
 	void closet_0 ()  //go to closet for the first time
 	{
+		myLocation = Locations.in_apartment;
+
 		text.text = "You open your closet and admire your wedding clothes. " +
 		"But you decide to clean yourself up before getting dressed. " +
 		"So you close the closet, for now. " +
@@ -219,6 +240,8 @@ public class TextController : MonoBehaviour {
 
 	void bathroom_0 ()  //go to bathroom for the first time. selects player's sex.
 	{
+		myLocation = Locations.in_apartment;
+
 		text.text = "You step into the bathroom. After getting 8 hours " +
 		"of sleep, you really need to pee!\n\n" +
 		"Press W to sit down, or M to remain standing.";
@@ -236,6 +259,8 @@ public class TextController : MonoBehaviour {
 
 	void apartment_0 ()
 	{
+		myLocation = Locations.in_apartment;
+
 		text.text = "You open your bedroom door to step into your  " +
 		"main living area. But since you're already near your bathroom " +
 		"and wedding clothes, you decide to get ready for the day first, " +
@@ -258,6 +283,8 @@ public class TextController : MonoBehaviour {
 
 	void bathroom_1()
 	{
+		myLocation = Locations.in_apartment;
+
 		text.text = "*Tinkling sound*\t" +
 		"*Flushing toilet sound*\n\n" +
 		"Ah, that's better! Time to wash up. Do you want to take " +
@@ -275,6 +302,8 @@ public class TextController : MonoBehaviour {
 
 	void bathroom_2 ()
 	{
+		myLocation = Locations.in_apartment;
+
 		text.text = "You're all clean, but the bathing took " +
 		"a bit of time. You have " + minutesLeft + " minutes left " +
 		"before the ceremony. Still, you want to look your best.\n\n" +
@@ -319,6 +348,8 @@ public class TextController : MonoBehaviour {
 
 	void shave_woman ()
 	{
+		myLocation = Locations.in_apartment;
+
 		text.text = "You lather up all the areas you typially " +
 		"shave and you get to work.\n\n" +
 		"There now... All smooth and shiny!\n\n" +
@@ -333,6 +364,8 @@ public class TextController : MonoBehaviour {
 
 	void shave_man ()
 	{
+		myLocation = Locations.in_apartment;
+
 		text.text = "You use your electric razor for some " +
 		"touch-ups here and there, and lather up your face " +
 		"for a very close shave. You take your time, as you " +
@@ -349,6 +382,8 @@ public class TextController : MonoBehaviour {
 
 	void makeup_woman ()
 	{
+		myLocation = Locations.in_apartment;
+
 		text.text = "You start with foundation, then some concealer. " +
 		"You add some blush, some eyeshadow, and slightly darken your " +
 		"brows with a pencil. You finish off with some mascara and lipstick " +
@@ -364,6 +399,8 @@ public class TextController : MonoBehaviour {
 
 	void makeup_man ()
 	{
+		myLocation = Locations.in_apartment;
+
 		text.text = "Yeah, you're a dude, but you know that " +
 		"a bit of color makes you look even hotter than usual. " +
 		"So you dab on tiny bits of concealer to even out your skin " +
@@ -379,6 +416,8 @@ public class TextController : MonoBehaviour {
 
 	void sh_makeup_woman ()
 	{
+		myLocation = Locations.in_apartment;
+
 		text.text = "You spend a few minutes shaving all the usual " +
 		"places until your skin is smooth and shiney. You spend a few more " +
 		"minutes applying makeup and styling your hair. The effort " +
@@ -394,6 +433,8 @@ public class TextController : MonoBehaviour {
 
 	void sh_makeup_man ()
 	{
+		myLocation = Locations.in_apartment;
+
 		text.text = "The metrosexual look works well on you, so " +
 		"you first use your electric razor to clean up around the edges. " +
 		"You then carefully use a blade to keep the stubble from showing. " +
@@ -410,6 +451,8 @@ public class TextController : MonoBehaviour {
 
 	void natural ()
 	{
+		myLocation = Locations.in_apartment;
+
 		text.text = "You decide -- quite correctly -- that the " +
 		"whole-body natural look works best for you. In addition " +
 		"to signalling your earth-loving nature, you save a lot of money in " +
@@ -424,6 +467,8 @@ public class TextController : MonoBehaviour {
 
 	void bedroom_1 ()
 	{
+		myLocation = Locations.in_apartment;
+
 		text.text = "You return to your bedroom. You're all " +
 		"done with your abulutions. You have" + minutesLeft + 
 		" minutes left before the ceremony. " +
@@ -442,6 +487,8 @@ public class TextController : MonoBehaviour {
 
 	void closet_1 ()
 	{
+		myLocation = Locations.in_apartment;
+
 		if (woman) {
 			myState = States.gown;
 			minutesLeft -= 10;
@@ -451,7 +498,10 @@ public class TextController : MonoBehaviour {
 		} 
 	}
 
-	void gown(){
+	void gown()
+	{
+		myLocation = Locations.in_apartment;
+
 		text.text= "You open your closet door and admire a beautiful " +
 		"white gown, along with shoes, gloves, a veil and matching beaded " +
 		"purse. You dress as quickly as possible, but there are a lot of " +
@@ -466,6 +516,8 @@ public class TextController : MonoBehaviour {
 
 	void tux ()
 	{
+		myLocation = Locations.in_apartment;
+
 		text.text = "You open your closet door and remove a stylish tux, " +
 		"along with all of its accessories. You spend several minutes " +
 		"getting dressed and finish your ensemble with a jaunty pocket " +
@@ -480,6 +532,8 @@ public class TextController : MonoBehaviour {
 
 	void apartment_1 ()
 	{
+		myLocation = Locations.in_apartment;
+
 		text.text = "You glance down, realize you're still naked, " +
 		"and decide to dress before doing anything else.\n\n" +
 		"Press C to look inside your closet instead.";
@@ -494,6 +548,8 @@ public class TextController : MonoBehaviour {
 
 	void apartment_2 ()
 	{
+		myLocation = Locations.in_apartment;
+
 		text.text = "You step into the main area of your apartment, a " +
 		"combined living-dining-kitchen great room. While it IS a great " +
 		"room, you'll be giving it up to move into your spouse's house " +
@@ -517,6 +573,8 @@ public class TextController : MonoBehaviour {
 
 	void breakfast_0()
 	{
+		myLocation = Locations.in_apartment;
+
 		text.text = "You decide to put a little food in your belly before " +
 		"leaving. You make a shot of espresso and heat up a Pop-Tart. " +
 		"It's just enough food to give you energy but not slow you down.\n\n" +
@@ -534,6 +592,8 @@ public class TextController : MonoBehaviour {
 
 	void video_0()
 	{
+		myLocation = Locations.in_apartment;
+
 		text.text = "Knowing you might not get to enjoy your favorite hobby " +
 		"for a few weeks, you load up a quick game of Civilization V. Next thing you " +
 		"know, 15 minutes have passed! You have " + minutesLeft + " minutes " +
@@ -552,6 +612,8 @@ public class TextController : MonoBehaviour {
 
 	void video_1() //just 5 more minutes lol
 	{
+		myLocation = Locations.in_apartment;
+
 		text.text = "You tell yourself 'just one more turn'... " +
 		"But as you know, one more turn takes 5 minutes. " +
 		"You have " + minutesLeft + " minutes " +
@@ -571,14 +633,24 @@ public class TextController : MonoBehaviour {
 
 	void exit_0()  //leaving the apartment
 	{
+		myLocation = Locations.out_apartment;
+
 		text.text = "You grab your already-packed honeymoon bag, step outside, " +
 		"and lock your apartment door. You could drive your car to the church, or " +
 		"catch the bus. The car is probably quicker, but the bus will be more " +
 		"relaxing. You have " + minutesLeft + " minutes left until the ceremony.\n\n" +
 		"Press C to drive your car, or press B to ride the bus.";
 
+		if (Input.GetKeyDown(KeyCode.C)){
+			myState = States.car_0;
+			minutesLeft -= 5;
+		} else if (Input.GetKeyDown(KeyCode.B)){
+			myState = States.bus_0;
+			minutesLeft -= 25;
+		}
+
 		//need if statements
-		//don't forget time
+		//don't forget time. I THINK IT IS HANDLED WITH THE LOCATIONS ENUM.
 		//don't forget dealing with hunger.
 	}
 
@@ -594,8 +666,34 @@ public class TextController : MonoBehaviour {
 		"your dawdling. You grab your honeymoon tickets, climb out a window, and run away.\n\n" +
 		"Maybe you'll find true love next time. Press P to replay.";
 
-		//need if statements
-		//don't forget time
-		//don't forget dealing with hunger.
+		if (Input.GetKeyDown(KeyCode.P)) {
+			minutesLeft = 120;
+			myState = States.bed_0;
+		}
+	}
+
+	void end_2() //shoot. need to make this work between rising from bed and leaving apartment
+		//maybe need to make another enum list of general locations (home, transport, coffee shop, whatever)
+		//to implement the correct ending. I THINK YOU GOT IT WITH THE LOCATIONS ENUM.
+	{
+		text.text = "You need some text for time running out away from home.\n\n" +
+		"Maybe you'll find true love next time. Press P to replay.";
+
+		if (Input.GetKeyDown(KeyCode.P)) {
+			minutesLeft = 120;
+			myState = States.bed_0;
+		}
+	}
+
+	void car_0()
+
+	{
+		text.text = "You get in the car. Now finish this.";
+	}
+
+	void bus_0 ()
+	{
+		text.text = "You get on the bus. Now finish this.";
+	
 	}
 }
