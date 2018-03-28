@@ -18,7 +18,8 @@ public class TextController : MonoBehaviour {
 		gown, tux,
 		apartment_0, apartment_1, apartment_2, 
 		breakfast_0, exit_0, video_0, video_1, 
-		car_0, bus_0, 
+		car_0, bus_0, bus_1,
+		church_0, church_1, donut_0, donut_1,
 		end_0, end_1, end_2};
 
 	private enum Locations //this is general location for running out of time endings
@@ -109,11 +110,21 @@ public class TextController : MonoBehaviour {
 		} else if (myState == States.end_1) {
 			end_1 ();
 		} else if (myState == States.car_0) {
-			end_1 ();
+			car_0 ();
 		} else if (myState == States.bus_0) {
-			end_1 ();
-		} else if (myState == States.end_1) {
+			bus_0 ();
+		} else if (myState == States.end_2) {
 			end_2 ();
+		} else if (myState == States.bus_1) {
+			bus_1 ();
+		} else if (myState == States.church_0) {
+			church_0 ();
+		} else if (myState == States.church_1) {
+			church_1 ();
+		} else if (myState == States.donut_0) {
+			donut_0 ();
+		} else if (myState == States.donut_1) {
+			donut_1 ();
 		} 
 	}
 
@@ -631,7 +642,7 @@ public class TextController : MonoBehaviour {
 		}
 	}
 
-	void exit_0()  //leaving the apartment
+	void exit_0()  //leaving the apartment (happens once)
 	{
 		myLocation = Locations.out_apartment;
 
@@ -646,7 +657,7 @@ public class TextController : MonoBehaviour {
 			minutesLeft -= 5;
 		} else if (Input.GetKeyDown(KeyCode.B)){
 			myState = States.bus_0;
-			minutesLeft -= 25;
+			minutesLeft -= 15;
 		}
 
 		//need if statements
@@ -685,15 +696,105 @@ public class TextController : MonoBehaviour {
 		}
 	}
 
-	void car_0()
-
+	void car_0 ()  //first time getting in car
 	{
-		text.text = "You get in the car. Now finish this.";
+		myLocation = Locations.out_apartment;
+
+		if (hungry) {
+			text.text = "You get in the car, and pull out of the driveway. " +
+			"The church is only a few minutes away. As soon as you turn the " +
+			"first corner, though, your stomach growls with hunger. You realize " +
+			"you forgot to eat.\n\n" +
+			"Press D to stop at a donut shop for breakfast. Press C to continue " +
+			"to the church -- you're running late!";
+		} else {
+			text.text = "You get in the car, and pull out of the driveway. " +
+			"The church is only a few minutes away, and you make it without " +
+			"incident.\n\n" +
+			"Press C to park your car and enter the church.";
+		}
+
+		if (Input.GetKeyDown (KeyCode.C)) {
+			minutesLeft -= 5;
+			myState = States.church_0;
+
+		} else if (Input.GetKeyDown(KeyCode.D)){
+			minutesLeft -= 1;
+			myState = States.donut_0;
+		}
 	}
 
-	void bus_0 ()
+	void bus_0 ()  //first time getting on bus
 	{
-		text.text = "You get on the bus. Now finish this.";
-	
+		myLocation = Locations.out_apartment;
+
+		if (woman) {
+			text.text = "After a five minute wait, the bus arrives. As you " +
+			"swipe your pass, the bus driver looks you up and down.\n\n" + 
+			"'Well, hellooooo, Miss Robinson! It's a fine day to run " +
+			"away from a wedding,' he winks. You smile, then make your way to " +
+			"the back seat.\n\n" +
+			"As the bus rides through town, you think about what the driver said...\n\n" +
+			"Press C to continue that thought...";
+		}
+		else {
+			text.text = "After a five minute wait, the bus arrives. As you " +
+			"swipe your pass, the bus driver looks you up and down.\n\n" + 
+			"'Well don't you look fine! If you're looking for love, " +
+			"today's the day to make a move,' he winks. You smile, then make your way to " +
+			"the back seat.\n\n" +
+			"As the bus rides through town, you think about what the driver said...\n\n" +
+			"Press C to continue that thought...";
+
+		}
+
+		if (Input.GetKeyDown(KeyCode.C)) {
+			minutesLeft -= 1;
+			myState = States.bus_1; //goes to decision to stay on the bus
+		}	
 	}
+
+	void bus_1 () //decision to stay on the bus
+	{
+		text.text = "Insert more thinking about the wedding here. Press P to start over.";
+
+		if (Input.GetKeyDown(KeyCode.P)) {
+			minutesLeft = 120;
+			myState = States.bed_0;
+
+			//don't forget a hungry bit here if you head to the church
+			//ignore it if you head to the airport
+		}
+	}
+
+	void church_0 ()
+	{
+		text.text = "You're in church.";
+
+		if (Input.GetKeyDown (KeyCode.P)) {
+			minutesLeft = 120;
+			myState = States.bed_0;
+		}
+	}
+
+	void donut_0 ()
+	{
+		text.text = "You're at the donut shop.";
+
+		if (Input.GetKeyDown (KeyCode.P)) {
+			minutesLeft = 120;
+			myState = States.bed_0;
+		}
+	}
+
+	void church_1()
+	{
+
+	}
+
+	void donut_1 ()
+	{
+
+	}
+
 }
