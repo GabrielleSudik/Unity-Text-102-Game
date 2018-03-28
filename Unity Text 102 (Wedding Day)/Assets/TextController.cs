@@ -19,6 +19,7 @@ public class TextController : MonoBehaviour {
 		apartment_0, apartment_1, apartment_2, 
 		breakfast_0, exit_0, video_0, video_1, 
 		car_0, bus_0, bus_1,
+		decide_church, decide_airport,
 		church_0, church_1, donut_0, donut_1,
 		end_0, end_1, end_2};
 
@@ -49,7 +50,9 @@ public class TextController : MonoBehaviour {
 
 		print (myState); //this is for console.
 
-		//make sure earlier if statements are about running out of time, and in the right place
+		//make sure the first if statements are about running out of time, and in the right place
+		//also, can you add a way to check how much time is left whenever? or to exit whenever?
+		//maybe make two methods, but the GetKeyDown goes in Update?
 
 		if (minutesLeft <= 0 && (myLocation == Locations.in_bed)) {
 			end_0 ();
@@ -125,6 +128,10 @@ public class TextController : MonoBehaviour {
 			donut_0 ();
 		} else if (myState == States.donut_1) {
 			donut_1 ();
+		} else if (myState == States.decide_church) {
+			decide_church ();
+		} else if (myState == States.decide_airport) {
+			decide_airport ();
 		} 
 	}
 
@@ -139,9 +146,9 @@ public class TextController : MonoBehaviour {
 		"You set your alarm to ring two hours before the ceremony begins, " +
 		"so you have " + minutesLeft + " minutes until the ceremony. " +
 		"What will you do now?\n\n" +
-		"To get out of bed, press W.\n" +
-		"To snooze for 10 minutes, press the space bar.\n" +
-		"To turn off your alarm completely and go back to sleep, press S.";
+		"Press W to get out of bed.\n" +
+		"Press the space bar to snooze for 10 minutes.\n" +
+		"Press S to turn off your alarm completely and go back to sleep.";
 
 		if (Input.GetKeyDown(KeyCode.W)) {
 			myState = States.bedroom_0;
@@ -162,9 +169,9 @@ public class TextController : MonoBehaviour {
 		text.text = "Your alarm rings again." +
 		"You have " + minutesLeft + " minutes until the ceremony. " +
 		"What will you do now?\n\n" +
-		"To get out of bed, press W.\n" +
-		"To snooze for another 10 minutes, press the space bar.\n" +
-		"To turn off your alarm completely and go back to sleep, press S.";
+		"Press W to get out of bed.\n" +
+		"Press the space bar to snooze for another 10 minutes.\n" +
+			"Press S to turn off your alarm completely and go back to sleep.";
 
 		if (Input.GetKeyDown(KeyCode.W)) {
 			myState = States.bedroom_0;
@@ -207,8 +214,8 @@ public class TextController : MonoBehaviour {
 		"the rest of your apartment. " +
 		"You have " + minutesLeft + " minutes until the ceremony. " +
 		"What will you do now?\n\n" +
-		"Press C to enter the closet, B to enter the bathroom, or " +
-		"A to enter the apartment.";
+		"Press C to enter the closet.\nPress B to enter the bathroom.\n" +
+		"Press A to enter the apartment.";
 
 		if (Input.GetKeyDown(KeyCode.C)) {
 			myState = States.closet_0;
@@ -234,13 +241,10 @@ public class TextController : MonoBehaviour {
 		"So you close the closet, for now. " +
 		//"You have " + minutesLeft + " minutes until the ceremony. " +
 		"What will you do now?\n\n" +
-		"Press C to open the closet, B to use the bathroom, or " +
-		"A to enter the apartment.";
+		"Press B to use the bathroom.\n" +
+		"Press A to enter the apartment.";
 
-		if (Input.GetKeyDown(KeyCode.C)) {
-			myState = States.closet_0;
-			minutesLeft -= 1;
-		} else if (Input.GetKeyDown(KeyCode.B)) {
+		if (Input.GetKeyDown(KeyCode.B)) {
 			myState = States.bathroom_0;
 			minutesLeft -= 1;
 		} else if (Input.GetKeyDown(KeyCode.A)) {
@@ -255,7 +259,7 @@ public class TextController : MonoBehaviour {
 
 		text.text = "You step into the bathroom. After getting 8 hours " +
 		"of sleep, you really need to pee!\n\n" +
-		"Press W to sit down, or M to remain standing.";
+		"Press W to sit down.\nPress M to remain standing.";
 
 		if (Input.GetKeyDown(KeyCode.W)) {
 			myState = States.bathroom_1;
@@ -278,7 +282,7 @@ public class TextController : MonoBehaviour {
 		"and you remain in your bedroom." +
 		//"You have " + minutesLeft + " minutes until the ceremony. " +
 		"What will you do now?\n\n" +
-		"Press C to open the closet, or B to use the bathroom.";
+		"Press C to open the closet.\nPress B to use the bathroom.";
 
 		if (Input.GetKeyDown(KeyCode.C)) {
 			myState = States.closet_0;
@@ -300,7 +304,7 @@ public class TextController : MonoBehaviour {
 		"*Flushing toilet sound*\n\n" +
 		"Ah, that's better! Time to wash up. Do you want to take " +
 		"a quick shower or a long bubble bath?\n\n" +
-		"Press S to shower, or B to take a bubble bath";
+		"Press S to shower.\nPress B to take a bubble bath";
 
 		if (Input.GetKeyDown(KeyCode.S)) {
 			myState = States.bathroom_2;
@@ -318,8 +322,8 @@ public class TextController : MonoBehaviour {
 		text.text = "You're all clean, but the bathing took " +
 		"a bit of time. You have " + minutesLeft + " minutes left " +
 		"before the ceremony. Still, you want to look your best.\n\n" +
-		"Press S to shave, M to put on make-up, B to do both, " +
-		"or N to remain natural.";
+		"Press S to shave.\nPress M to put on make-up.\bPress B to do both.\n" +
+		"Press N to remain natural.";
 
 		if (Input.GetKeyDown (KeyCode.S)) {
 			if (woman) {
@@ -364,7 +368,7 @@ public class TextController : MonoBehaviour {
 		text.text = "You lather up all the areas you typially " +
 		"shave and you get to work.\n\n" +
 		"There now... All smooth and shiny!\n\n" +
-		"You decide you're done gromming for today." +
+		"You decide you're done gromming for today.\n\n" +
 		"Press B to return to your bedroom.";
 
 		if (Input.GetKeyDown (KeyCode.B)) {
@@ -464,7 +468,7 @@ public class TextController : MonoBehaviour {
 	{
 		myLocation = Locations.in_apartment;
 
-		text.text = "You decide -- quite correctly -- that the " +
+		text.text = "You decide that the " +
 		"whole-body natural look works best for you. In addition " +
 		"to signalling your earth-loving nature, you save a lot of money in " +
 		"cosmetics, not to mention grooming time.\n\n" +
@@ -484,8 +488,8 @@ public class TextController : MonoBehaviour {
 		"done with your abulutions. You have" + minutesLeft + 
 		" minutes left before the ceremony. " +
 		"What will you do next?\n\n" +
-		"Press C to open your closet. Press A to enter the " +
-		"rest of your apartment.";
+		"Press C to open your closet.\nPress A to move to the " +
+		"main area of your apartment.";
 
 		if (Input.GetKeyDown (KeyCode.C)) {
 			myState = States.closet_1;
@@ -566,8 +570,8 @@ public class TextController : MonoBehaviour {
 		"room, you'll be giving it up to move into your spouse's house " +
 		"after the honeymoon. You worry you'll miss your solitude...\n\n" +
 		"You have " + minutesLeft+ " minutes left before the ceremony.\n\n" +
-		"To make yourself a quick breakfast, press K. To relax with some " +
-		"videogame time, press V. To head out the door, press E.";
+		"Press K to make yourself a quick breakfast.\nPress V to relax with some " +
+		"videogame time.\nPress E to head out the door.";
 
 		if (Input.GetKeyDown(KeyCode.K)){
 			myState = States.breakfast_0;
@@ -589,8 +593,8 @@ public class TextController : MonoBehaviour {
 		text.text = "You decide to put a little food in your belly before " +
 		"leaving. You make a shot of espresso and heat up a Pop-Tart. " +
 		"It's just enough food to give you energy but not slow you down.\n\n" +
-		"To relax with some " +
-		"videogame time, press V. To head out the door, press E.";
+		"Press V to relax with some " +
+		"videogame time.\nPress E to head out the door.";
 
 		if (Input.GetKeyDown(KeyCode.V)){
 			myState = States.video_0;
@@ -609,8 +613,8 @@ public class TextController : MonoBehaviour {
 		"for a few weeks, you load up a quick game of Civilization V. Next thing you " +
 		"know, 15 minutes have passed! You have " + minutesLeft + " minutes " +
 		"left until the ceremony.\n\n" +
-		"If you've had your gaming fix, press E to head out the door. " +
-		"If you want to play just one more turn, press V.";
+		"Press E if you're done gaming and are ready to leave.\n" +
+		"Press V if you want to play Just. One. More. Turn.";
 
 		if (Input.GetKeyDown(KeyCode.V)){
 			myState = States.video_1;
@@ -629,9 +633,9 @@ public class TextController : MonoBehaviour {
 		"But as you know, one more turn takes 5 minutes. " +
 		"You have " + minutesLeft + " minutes " +
 		"left until the ceremony.\n\n" +
-		"If you've had your gaming fix, press E to head out the door. " +
-		"If you want to play just one more turn -- seriously, only one " +
-		"more turn, you promise -- press V.";
+		"Press E if you're done gaming and are ready to leave.\n" +
+			"Press V if you want to play Just. One. More. Turn. ... Again ... " +
+			"Seriously. Only one more turn, you promise.";
 
 		if (Input.GetKeyDown(KeyCode.V)){
 			myState = States.video_1;
@@ -650,7 +654,7 @@ public class TextController : MonoBehaviour {
 		"and lock your apartment door. You could drive your car to the church, or " +
 		"catch the bus. The car is probably quicker, but the bus will be more " +
 		"relaxing. You have " + minutesLeft + " minutes left until the ceremony.\n\n" +
-		"Press C to drive your car, or press B to ride the bus.";
+		"Press C to drive your car.\nPress B to take the bus.";
 
 		if (Input.GetKeyDown(KeyCode.C)){
 			myState = States.car_0;
@@ -675,7 +679,7 @@ public class TextController : MonoBehaviour {
 		"OH MY GOD IS THAT THE TIME!?!?!.\n\n" +
 		"You missed the ceremony because of all " +
 		"your dawdling. You grab your honeymoon tickets, climb out a window, and run away.\n\n" +
-		"Maybe you'll find true love next time. Press P to replay.";
+		"Maybe you'll find true love next time.\nPress P to replay.";
 
 		if (Input.GetKeyDown(KeyCode.P)) {
 			minutesLeft = 120;
@@ -688,7 +692,7 @@ public class TextController : MonoBehaviour {
 		//to implement the correct ending. I THINK YOU GOT IT WITH THE LOCATIONS ENUM.
 	{
 		text.text = "You need some text for time running out away from home.\n\n" +
-		"Maybe you'll find true love next time. Press P to replay.";
+		"Maybe you'll find true love next time.\nPress P to replay.";
 
 		if (Input.GetKeyDown(KeyCode.P)) {
 			minutesLeft = 120;
@@ -705,7 +709,7 @@ public class TextController : MonoBehaviour {
 			"The church is only a few minutes away. As soon as you turn the " +
 			"first corner, though, your stomach growls with hunger. You realize " +
 			"you forgot to eat.\n\n" +
-			"Press D to stop at a donut shop for breakfast. Press C to continue " +
+			"Press D to stop at a donut shop for breakfast.\nPress C to continue " +
 			"to the church -- you're running late!";
 		} else {
 			text.text = "You get in the car, and pull out of the driveway. " +
@@ -740,8 +744,9 @@ public class TextController : MonoBehaviour {
 		else {
 			text.text = "After a five minute wait, the bus arrives. As you " +
 			"swipe your pass, the bus driver looks you up and down.\n\n" + 
-			"'Well don't you look fine! If you're looking for love, " +
-			"today's the day to make a move,' he winks. You smile, then make your way to " +
+			"'Well don't you look fine! I kinda wonder if James Bond just got " +
+			"on my bus, and is off to save the world and seduce the beautiful " + 
+			"people,' he winks. You smile, then make your way to " +
 			"the back seat.\n\n" +
 			"As the bus rides through town, you think about what the driver said...\n\n" +
 			"Press C to continue that thought...";
@@ -756,16 +761,26 @@ public class TextController : MonoBehaviour {
 
 	void bus_1 () //decision to stay on the bus
 	{
-		text.text = "Insert more thinking about the wedding here. Press P to start over.";
+		text.text = "On one hand, you love your intended and think sharing a life " +
+		"with another person will be comfortable and comforting. On the other hand, " +
+		"the mere reminder that there is a life without the trappings " +
+		"of marriage has got you riled up. You decide to:\n\n" +
+		"Press C to continue to the church.\n" +
+		"Press A to head directly to the airport.";
 
-		if (Input.GetKeyDown(KeyCode.P)) {
-			minutesLeft = 120;
-			myState = States.bed_0;
+		if (Input.GetKeyDown(KeyCode.C)) {
+			minutesLeft -= 10;
+			myState = States.decide_church;
 
 			//don't forget a hungry bit here if you head to the church
 			//ignore it if you head to the airport
 		}
+		else if (Input.GetKeyDown(KeyCode.A)){
+			myState = States.decide_airport;
+		}
 	}
+
+	//woman! you've forgotten to add the minutes countdown
 
 	void church_0 ()
 	{
@@ -789,12 +804,42 @@ public class TextController : MonoBehaviour {
 
 	void church_1()
 	{
+		text.text = "differnt church text here.";
 
+		if (Input.GetKeyDown (KeyCode.P)) {
+			minutesLeft = 120;
+			myState = States.bed_0;
+		}
 	}
 
 	void donut_1 ()
 	{
+		text.text = "other donut text here.";
 
+		if (Input.GetKeyDown (KeyCode.P)) {
+			minutesLeft = 120;
+			myState = States.bed_0;
+		}
+	}
+
+	void decide_church ()
+	{
+		text.text = "You decide to continue on to church text here.";
+
+		if (Input.GetKeyDown (KeyCode.P)) {
+			minutesLeft = 120;
+			myState = States.bed_0;
+		}
+	}
+
+	void decide_airport ()
+	{
+		text.text = "You make a break for the airport text here lol.";
+
+		if (Input.GetKeyDown (KeyCode.P)) {
+			minutesLeft = 120;
+			myState = States.bed_0;
+		}
 	}
 
 }
