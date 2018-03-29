@@ -21,6 +21,7 @@ public class TextController : MonoBehaviour {
 		car_0, bus_0, bus_1,
 		decide_church, decide_airport,
 		church_0, church_1, donut_0, donut_1,
+		order_0, cute_man_0, cute_woman_0,
 		end_0, end_1, end_2};
 
 	private enum Locations //this is general location for running out of time endings
@@ -132,7 +133,13 @@ public class TextController : MonoBehaviour {
 			decide_church ();
 		} else if (myState == States.decide_airport) {
 			decide_airport ();
-		} 
+		}  else if (myState == States.order_0) {
+			order_0 ();
+		} else if (myState == States.cute_man_0) {
+			cute_man_0 ();
+		} else if (myState == States.cute_woman_0) {
+			cute_woman_0 ();
+		}
 	}
 
 
@@ -794,11 +801,23 @@ public class TextController : MonoBehaviour {
 
 	void donut_0 ()
 	{
-		text.text = "You're at the donut shop.";
+		text.text = "You pull into the donut shop parking lot, park, " +
+		"then enter the store. As you wait in the middle of three lines, you " +
+		"notice a good-looking man to your right, and a good-looking woman " +
+		"to your left. Both look you up and down, and smile.\n\n" +
+		"Press M to focus on the shop menu.\nPress R to smile back at the man.\n" +
+		"Press L to smile back at the woman.";
 
-		if (Input.GetKeyDown (KeyCode.P)) {
-			minutesLeft = 120;
-			myState = States.bed_0;
+		if (Input.GetKeyDown (KeyCode.M)) {
+			minutesLeft -= 3;
+			myState = States.order_0;
+
+		} else if (Input.GetKeyDown(KeyCode.R)){
+			minutesLeft -= 6;
+			myState = States.cute_man_0;
+		} else if (Input.GetKeyDown(KeyCode.L)){
+			minutesLeft -= 6;
+			myState = States.cute_woman_0;
 		}
 	}
 
@@ -842,4 +861,37 @@ public class TextController : MonoBehaviour {
 		}
 	}
 
+	void order_0 ()
+	{
+		text.text = "You notice some fellow customers checking out ." +
+		"your wedding clothes. You don't have time to chat, though. " +
+		"You've got donuts to eat and a church to get to!\n\n" +
+		"Press D to order a couple donuts.";
+
+		//update:
+		if (Input.GetKeyDown (KeyCode.P)) {
+			minutesLeft = 120;
+			myState = States.bed_0;
+		}
+	}
+
+	void cute_man_0()
+	{
+		text.text = "Cute guy text here.";
+
+		if (Input.GetKeyDown (KeyCode.P)) {
+			minutesLeft = 120;
+			myState = States.bed_0;
+		}
+	}
+
+	void cute_woman_0 ()
+	{
+		text.text = "Cute girl text here.";
+
+		if (Input.GetKeyDown (KeyCode.P)) {
+			minutesLeft = 120;
+			myState = States.bed_0;
+		}
+	}
 }
