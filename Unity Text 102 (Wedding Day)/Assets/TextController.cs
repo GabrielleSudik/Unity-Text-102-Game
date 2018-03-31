@@ -20,10 +20,11 @@ public class TextController : MonoBehaviour {
 		breakfast_0, exit_0, video_0, video_1, 
 		car_0, bus_0, bus_1,
 		decide_church, decide_airport, airport_end, 
-		church_0, church_1, donut_0, donut_1,
+		church_0, church_1, church_2, church_3,
+		donut_0, donut_1,
 		order_0, order_1, 
 		cute_man_0, cute_woman_0,
-		end_0, end_1, end_2};
+		end_0, end_1, end_2, end_3};
 
 	private enum Locations //this is general location for running out of time endings
 	{
@@ -144,6 +145,12 @@ public class TextController : MonoBehaviour {
 			cute_woman_0 ();
 		} else if (myState == States.airport_end) {
 			airport_end ();
+		} else if (myState == States.end_3) {
+			end_3 ();
+		} else if (myState == States.church_2) {
+			church_2 ();
+		} else if (myState == States.church_3) {
+			church_3 ();
 		}
 	}
 
@@ -796,11 +803,14 @@ public class TextController : MonoBehaviour {
 
 	void church_0 () //use for all debarkations from car or bus
 	{
-		text.text = "You arrive at the church.";
+		text.text = "You exit the vehicle at the church. There are lots of cars " +
+		"here but no one else. Looks like everyone else is inside. You straighten " +
+		"your clothes one last time, then step inside the front door, ready " +
+		"to say 'I do!'\n\n" +
+		"Press C to continue.";
 
-		if (Input.GetKeyDown (KeyCode.P)) {
-			minutesLeft = 120;
-			myState = States.bed_0;
+		if (Input.GetKeyDown (KeyCode.C)) {
+			myState = States.church_1;
 		}
 	}
 
@@ -826,9 +836,74 @@ public class TextController : MonoBehaviour {
 		}
 	}
 
-	void church_1()
+	void church_1 () //enter the church
 	{
-		text.text = "differnt church text here.";
+		if (hungry == true) //if hungry, you faint
+		{
+			text.text = "You climb the stairs and your stomach growls. " +
+			"LOUDLY. D'oh! You forgot to eat. Well, too late now! You " +
+			"step into the church. As you lay eyes on all the guests, your " +
+			"head starts to spin. Your stomach rumbles again. The room goes " +
+			"dark...\n\n" +
+			"Press C to continue.";
+
+			if (Input.GetKeyDown (KeyCode.C)) {
+			myState = States.church_2;
+			}
+
+		} else //if not hungry, proceed to ceremony.
+		{
+			text.text = "You climb the stairs, pass through the vestibule, " +
+			"and step into the church. A sea of faces turns towards you, but " +
+			"you have eyes only for your intended. As music plays, you walk down " +
+			"the aisle. You clasp your intended's hand, smile, and turn towards " +
+			"the officiant, ready to say 'I do!'\n\n" +
+			"Press C to continue";
+
+			if (Input.GetKeyDown (KeyCode.C)) {
+			myState = States.end_3;
+			}
+
+		}
+
+	}
+
+	void church_2 () //you fainted in church
+	{
+		text.text = "You open your eyes, flat on your back. " +
+		"You find your intended staring " +
+		"you in the face. Beyond that are several relatives, looking " +
+		"concerned. Beyond that are several naked churubs, gazing down from " +
+		"the ceiling.\n" +
+		"How embarrassing... you fainted from hunger at your own wedding!\n\n" + 
+		"Press P to pick up your dignity and get on with it already.";
+
+		if (Input.GetKeyDown (KeyCode.P)) {
+			myState = States.church_3;
+		}
+	}
+
+	void church_3() //ceremony after you fainted
+	{
+		text.text = "You get up, brush yourself off, and clasp your intended's " +
+			"hand. You receive a few pats on the back, then everyone else " +
+			"returns to their seats. As music plays, you walk down " +
+			"the aisle, hand in hand with your intended. You approach " +
+			"the officiant, ready to say 'I do!'\n\n" +
+			"Press C to continue";
+
+			if (Input.GetKeyDown (KeyCode.C)) {
+			myState = States.end_3;
+			}
+	}
+
+
+
+	void end_3 () //you get married!
+
+	{
+		text.text = "Congratulations! You are married.\n\n" + 
+		"Press P to play again.";
 
 		if (Input.GetKeyDown (KeyCode.P)) {
 			minutesLeft = 120;
@@ -915,6 +990,7 @@ public class TextController : MonoBehaviour {
 		//update:
 		if (Input.GetKeyDown (KeyCode.C)) {
 			minutesLeft -= 8;
+			hungry = false;
 			myState = States.church_0;
 		}
 	}
