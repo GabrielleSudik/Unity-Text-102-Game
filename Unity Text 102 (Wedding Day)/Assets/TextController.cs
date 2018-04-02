@@ -21,7 +21,7 @@ public class TextController : MonoBehaviour {
 		car_0, bus_0, bus_1,
 		decide_church, decide_airport, airport_end, 
 		church_0, church_1, church_2, church_3,
-		donut_0, donut_1, donut_2,
+		donut_0, donut_1, donut_2, donut_3, donut_4,
 		order_0, order_1, 
 		cute_man_0, cute_woman_0,
 		end_0, end_1, end_2, end_3};
@@ -153,6 +153,10 @@ public class TextController : MonoBehaviour {
 			church_2 ();
 		} else if (myState == States.church_3) {
 			church_3 ();
+		} else if (myState == States.donut_3) {
+			donut_3 ();
+		} else if (myState == States.donut_4) {
+			donut_4 ();
 		}
 	}
 
@@ -1012,7 +1016,7 @@ public class TextController : MonoBehaviour {
 		"Press Y to say yes.\nPress N to politely turn him down.";
 
 		if (Input.GetKeyDown (KeyCode.Y)) {
-			minutesLeft -= 3;
+			minutesLeft -= 20;
 			myState = States.donut_1;
 		}
 		else if (Input.GetKeyDown (KeyCode.N)) {
@@ -1032,7 +1036,7 @@ public class TextController : MonoBehaviour {
 		"Press Y to say yes.\nPress N to politely turn her down.";
 
 		if (Input.GetKeyDown (KeyCode.Y)) {
-			minutesLeft -= 3;
+			minutesLeft -= 20;
 			myState = States.donut_1;
 		}
 		else if (Input.GetKeyDown (KeyCode.N)) {
@@ -1043,28 +1047,50 @@ public class TextController : MonoBehaviour {
 
 	void donut_1 () //if you accept the date (yes)
 	{
+		myLocation = Locations.out_apartment;
+
 		text.text = "Greatly flattered, you accept the offer. You both " +
 		"order some donuts and espresso, then sit at a quiet table. " +
-		"For the next 20 minutes, you completely forget what you're " +
+		"For the next 10 minutes, you completely forget what you're " +
 		"supposed to be doing today, you're so taken with the company.\n\n" +
-		"Press C to keep chatting.";
+		"Press C to keep chatting.\nPress E to come to your senses and head to the church.";
 
 		//update:
-		if (Input.GetKeyDown (KeyCode.P)) { //go to either run out of time on_date
+		if (Input.GetKeyDown (KeyCode.C)) { //go to either run out of time on_date
 				//or if you don't run out of time, decision to stay or go to church.
-			minutesLeft = 120;
-			myState = States.bed_0;
+			minutesLeft -=10;
+			myState = States.donut_3;
+		}
+
+		else if (Input.GetKeyDown (KeyCode.E)) {
+			minutesLeft -= 1;
+			myState = States.donut_4;
 		}
 	}
 
 	void donut_2 () //if you decline the date (no)
 	{
-		text.text = "enter text here about being flattered but declining the offer.";
 
-		//update:
-		if (Input.GetKeyDown (KeyCode.P)) { 
-			minutesLeft = 120;
-			myState = States.bed_0;
+		myLocation = Locations.out_apartment;
+
+		text.text = "Although you are greatly flattered, you politely turn down " +
+		"the invite. Your true love is waiting for you at the altar! You " +
+		"step up to the counter.\n\n" +
+		"Press M to focus on the menu.";
+
+		if (Input.GetKeyDown (KeyCode.M)) { //you'll order your donuts then leave
+			minutesLeft = 3;
+			myState = States.order_0;
 		}
+	}
+
+	void donut_3() //continue the date
+	{
+
+	}
+
+	void donut_4() //end the date
+	{
+
 	}
 }
