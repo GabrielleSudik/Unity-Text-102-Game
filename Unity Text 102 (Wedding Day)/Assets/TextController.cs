@@ -21,7 +21,7 @@ public class TextController : MonoBehaviour {
 		car_0, bus_0, bus_1,
 		decide_church, decide_airport, airport_end, 
 		church_0, church_1, church_2, church_3,
-		donut_0, donut_1, donut_2, donut_3, donut_4,
+		donut_0, donut_1, donut_2, donut_3, donut_4, donut_5,
 		order_0, order_1, 
 		cute_man_0, cute_woman_0,
 		end_0, end_1, end_2, end_3};
@@ -63,6 +63,8 @@ public class TextController : MonoBehaviour {
 			end_1 ();
 		} else if (minutesLeft <= 0 && myLocation == Locations.out_apartment) {
 			end_2 ();
+		} else if (minutesLeft <= 0 && myLocation == Locations.on_date) {
+			end_on_date ();
 		} else if (myState == States.bed_0) {
 			bed_0 ();
 		} else if (myState == States.end_0) {
@@ -157,6 +159,8 @@ public class TextController : MonoBehaviour {
 			donut_3 ();
 		} else if (myState == States.donut_4) {
 			donut_4 ();
+		} else if (myState == States.donut_5) {
+			donut_5 ();
 		}
 	}
 
@@ -354,7 +358,7 @@ public class TextController : MonoBehaviour {
 			if (woman) {
 				myState = States.shave_woman;
 				minutesLeft -= 5;
-			} else {
+			} else if (woman == false) {
 				myState = States.shave_man;
 				minutesLeft -= 8;
 			}
@@ -364,7 +368,7 @@ public class TextController : MonoBehaviour {
 			if (woman) {
 				myState = States.makeup_woman;
 				minutesLeft -= 10;
-			} else {
+			} else if (woman == false)  {
 				myState = States.makeup_man;
 				minutesLeft -= 3;
 			}
@@ -374,7 +378,7 @@ public class TextController : MonoBehaviour {
 			if (woman) {
 				myState = States.sh_makeup_woman;
 				minutesLeft -= 15;
-			} else {
+			} else if (woman == false)  {
 				myState = States.sh_makeup_man;
 				minutesLeft -= 11;
 			}
@@ -489,7 +493,7 @@ public class TextController : MonoBehaviour {
 
 	}
 
-	void natural ()
+	void natural () //this is for both men and women
 	{
 		myLocation = Locations.in_apartment;
 
@@ -524,16 +528,16 @@ public class TextController : MonoBehaviour {
 		}
 	}
 
-	void closet_1 () //closet for both genders
+	void closet_1 () //closet for both genders (if else statement picks clothes)
 	{
 		myLocation = Locations.in_apartment;
 
 		if (woman) {
 			myState = States.gown;
-			minutesLeft -= 10;
+			minutesLeft -= 1;
 		} else {
 			myState = States.tux;
-			minutesLeft -= 10;
+			minutesLeft -= 1;
 		} 
 	}
 
@@ -630,7 +634,7 @@ public class TextController : MonoBehaviour {
 		}
 	}
 
-	void video_0() //play videogame first time
+	void video_0() //play videogame first time //DO: ADD OPTION TO EAT
 	{
 		myLocation = Locations.in_apartment;
 
@@ -719,8 +723,8 @@ public class TextController : MonoBehaviour {
 		"is it?\n\n" +
 		"OH MY GOD IS THAT THE TIME!?!?!\n\n" +
 		"You missed the ceremony because of all your dawdling, so you decide " +
-		"to continue to the airport. Alone. And lonely. " +
-		"Maybe you'll find true love next time.\n\nPress P to replay.";
+		"to continue to the airport with your honeymoon tickets. Alone. And lonely. " +
+		"Maybe you'll find true love next time.\n\nPress P to play again.";
 
 		if (Input.GetKeyDown(KeyCode.P)) {
 			minutesLeft = 120;
@@ -739,7 +743,7 @@ public class TextController : MonoBehaviour {
 			minutesLeft + " minutes left until the ceremony.\n\n" +
 			"Press D to stop at a donut shop for breakfast.\nPress C to continue " +
 			"to the church -- you're running late!";
-		} else {
+		} else if (hungry == false) {
 			text.text = "You get in the car, and pull out of the driveway. " +
 			"The church is only a few minutes away, and you make it without " +
 			"incident.\n\n" +
@@ -834,6 +838,8 @@ public class TextController : MonoBehaviour {
 		minutesLeft + " minutes left until the ceremony.\n\n" +
 		"Press M to focus on the shop menu.\nPress R to smile back at the man.\n" +
 		"Press L to smile back at the woman.";
+
+		hungry = false; //turns of hungry 
 
 		if (Input.GetKeyDown (KeyCode.M)) {
 			minutesLeft -= 3;
@@ -957,7 +963,7 @@ public class TextController : MonoBehaviour {
 
 	void airport_end () //ending if you were on the bus and decided not to marry
 	{
-		text.text = "You continue to watch the town on your " +
+		text.text = "You're on your " +
 		"way to the airport, minus the person you had planned to marry. " +
 		"You're not positive you're doing the right thing, but you do " +
 		"know that freedom from commitment can bring contentment, so you " +
@@ -999,15 +1005,14 @@ public class TextController : MonoBehaviour {
 		//update:
 		if (Input.GetKeyDown (KeyCode.C)) {
 			minutesLeft -= 5;
-			hungry = false;
+			//hungry = false; //I don't think this is needed. covered in first donut shop method
 			myState = States.church_0;
 		}
 	}
 
 	void cute_man_0() //donut shop if you chat with the man
 	{
-		myLocation = Locations.out_apartment; //maybe make man or woman Plan B, 
-		//instaed of "go to airpot"? YES. if you say yes.
+		myLocation = Locations.out_apartment; 
 
 		text.text = "You turn to get a good look at the man. He's not " +
 		"just good-looking, he's gorgeous. You return his smile, and his gets " +
@@ -1016,7 +1021,7 @@ public class TextController : MonoBehaviour {
 		"Press Y to say yes.\nPress N to politely turn him down.";
 
 		if (Input.GetKeyDown (KeyCode.Y)) {
-			minutesLeft -= 20;
+			minutesLeft -= 1;
 			myState = States.donut_1;
 		}
 		else if (Input.GetKeyDown (KeyCode.N)) {
@@ -1027,8 +1032,7 @@ public class TextController : MonoBehaviour {
 
 	void cute_woman_0 () //donut shop if you chat with the woman
 	{
-		myLocation = Locations.out_apartment; //maybe make man or woman Plan B, 
-		//instaed of "go to airpot"? YES if you say yes
+		myLocation = Locations.out_apartment; 
 
 		text.text = "You turn to smile back at the woman and notice " +
 		"she is quite pretty. 'Don't you look nice,' she says. 'Any chance " +
@@ -1036,7 +1040,7 @@ public class TextController : MonoBehaviour {
 		"Press Y to say yes.\nPress N to politely turn her down.";
 
 		if (Input.GetKeyDown (KeyCode.Y)) {
-			minutesLeft -= 20;
+			minutesLeft -= 1;
 			myState = States.donut_1;
 		}
 		else if (Input.GetKeyDown (KeyCode.N)) {
@@ -1055,9 +1059,7 @@ public class TextController : MonoBehaviour {
 		"supposed to be doing today, you're so taken with the company.\n\n" +
 		"Press C to keep chatting.\nPress E to come to your senses and head to the church.";
 
-		//update:
-		if (Input.GetKeyDown (KeyCode.C)) { //go to either run out of time on_date
-				//or if you don't run out of time, decision to stay or go to church.
+		if (Input.GetKeyDown (KeyCode.C)) { 				
 			minutesLeft -=10;
 			myState = States.donut_3;
 		}
@@ -1079,18 +1081,71 @@ public class TextController : MonoBehaviour {
 		"Press M to focus on the menu.";
 
 		if (Input.GetKeyDown (KeyCode.M)) { //you'll order your donuts then leave
-			minutesLeft = 3;
+			minutesLeft -= 3;
 			myState = States.order_0;
 		}
 	}
 
 	void donut_3() //continue the date
 	{
+		myLocation = Locations.on_date;
+
+		text.text = "You keep talking. And listening. You find yourself " +
+		"more and more drawn to the person sitting across from you. " +
+		"Could this be the thing discussed in fairy tales -- love at first sight?" +
+		"You know there's something else you're supposed to be " +
+		"doing, but as if you're under a spell, you cannot leave.\n\n" +
+		"Press C to keep chatting.";
+
+		if (Input.GetKeyDown (KeyCode.C)) { 				
+			minutesLeft -=10;
+			myState = States.donut_5;
+		}
 
 	}
 
 	void donut_4() //end the date
 	{
+		text.text = "Although you greatly enjoyed this one last date, " +
+		"you know your true love waits for you at the church. You thank " +
+		"your companion for the company, and head back to your car.\n\n" +
+		"Press C to continue to the church.";
 
+		//update:
+		if (Input.GetKeyDown (KeyCode.C)) {
+			minutesLeft -= 5;
+			hungry = false;
+			myState = States.church_0;
+		}
+	}
+
+	void donut_5() //date continues (loop)
+	{
+		myLocation = Locations.on_date;
+
+		text.text = "The magic continues. You are completely absorbed " +
+		"with everything about your impromptu breakfast date, and " +
+		"they are equally enchanted with you. You don't want it to end.\n\n" +
+		"Press C to keep chatting.";
+
+		if (Input.GetKeyDown (KeyCode.C)) { 				
+			minutesLeft -=10;
+			myState = States.donut_5;
+		}
+	}
+
+	void end_on_date ()
+	{
+		text.text = "Finally, the part of your brain that has not fallen " +
+		"completely in love with the person across from you remembers " +
+		"who you were SUPPOSED to be with today. Then you realize that: " +
+		"No. THIS is who you are supposed to be with. " +
+		"So you mentally whisper a quick farewell, and stay right where you are.\n\n" +
+		"Press P to play again.";
+
+			if (Input.GetKeyDown(KeyCode.P)) {
+			minutesLeft = 120;
+			myState = States.bed_0;
+		}
 	}
 }
