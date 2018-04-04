@@ -188,7 +188,7 @@ public class TextController : MonoBehaviour {
 		} else if (Input.GetKeyDown(KeyCode.S)) {
 			myState = States.end_0;
 			minutesLeft -= 120;
-		}
+		} 
 	}
 
 	void bed_1 ()  //if snooze
@@ -200,7 +200,7 @@ public class TextController : MonoBehaviour {
 		"What will you do now?\n\n" +
 		"Press W to get out of bed.\n" +
 		"Press the space bar to snooze for another 10 minutes.\n" +
-			"Press S to turn off your alarm completely and go back to sleep.";
+		"Press S to turn off your alarm completely and go back to sleep.";
 
 		if (Input.GetKeyDown(KeyCode.W)) {
 			myState = States.bedroom_0;
@@ -260,6 +260,8 @@ public class TextController : MonoBehaviour {
 
 	//hmm, would better code put the substraction in the States if/else section?
 	//you only have to write it once per state that way...
+	//no, because I think that constantly checks for what's going on.
+	//you'd run out of time in the first 10 seconds.
 
 	void closet_0 ()  //go to closet for the first time
 	{
@@ -394,10 +396,10 @@ public class TextController : MonoBehaviour {
 	{
 		myLocation = Locations.in_apartment;
 
-		text.text = "You lather up all the areas you typially " +
+		text.text = "You lather up all the areas you typically " +
 		"shave and you get to work.\n\n" +
 		"There now... All smooth and shiny!\n\n" +
-		"You decide you're done gromming for today.\n\n" +
+		"You decide you're done grooming for today.\n\n" +
 		"Press B to return to your bedroom.";
 
 		if (Input.GetKeyDown (KeyCode.B)) {
@@ -430,7 +432,7 @@ public class TextController : MonoBehaviour {
 
 		text.text = "You start with foundation, then some concealer. " +
 		"You add some blush, some eyeshadow, and slightly darken your " +
-		"brows with a pencil. You finish off with some mascara and lipstick " +
+		"brows with a pencil. You finish off with some mascara and lipstick, " +
 		"then give your hair a quick style. You look beautiful!\n\n" +
 		"Press B to return to your bedroom.";
 
@@ -498,9 +500,9 @@ public class TextController : MonoBehaviour {
 		myLocation = Locations.in_apartment;
 
 		text.text = "You decide that the " +
-		"whole-body natural look works best for you. In addition " +
-		"to signalling your earth-loving nature, you save a lot of money in " +
-		"cosmetics, not to mention grooming time.\n\n" +
+		"whole-body natural look works best for you. It shows off " +
+		"your earth-loving nature, plus it saves money " +
+		"and time.\n\n" +
 		"Press B to return to your bedroom.";
 
 		if (Input.GetKeyDown (KeyCode.B)) {
@@ -513,9 +515,9 @@ public class TextController : MonoBehaviour {
 	{
 		myLocation = Locations.in_apartment;
 
-		text.text = "You return to your bedroom. You're all " +
-		"done with your abulutions. You have " + minutesLeft + 
-		" minutes left before the ceremony.\n\n " +
+		text.text = "Having finished your bathroom rituals, " +
+		"you return to your bedroom. You have " + minutesLeft + 
+		" minutes left before the ceremony.\n\n" +
 		"Press C to open your closet.\nPress A to move to the " +
 		"main area of your apartment.";
 
@@ -553,7 +555,7 @@ public class TextController : MonoBehaviour {
 
 		if (Input.GetKeyDown (KeyCode.A)) {
 			myState = States.apartment_2;
-			minutesLeft -= 10;
+			minutesLeft -= 1;
 		}		
 	}
 
@@ -569,7 +571,7 @@ public class TextController : MonoBehaviour {
 
 		if (Input.GetKeyDown (KeyCode.A)) {
 			myState = States.apartment_2;
-			minutesLeft -= 10;
+			minutesLeft -= 1;
 		}
 	}
 
@@ -743,7 +745,7 @@ public class TextController : MonoBehaviour {
 			minutesLeft + " minutes left until the ceremony.\n\n" +
 			"Press D to stop at a donut shop for breakfast.\nPress C to continue " +
 			"to the church -- you're running late!";
-		} else if (hungry == false) {
+		} else /*if (hungry == false)*/ {
 			text.text = "You get in the car, and pull out of the driveway. " +
 			"The church is only a few minutes away, and you make it without " +
 			"incident.\n\n" +
@@ -839,7 +841,7 @@ public class TextController : MonoBehaviour {
 		"Press M to focus on the shop menu.\nPress R to smile back at the man.\n" +
 		"Press L to smile back at the woman.";
 
-		hungry = false; //turns of hungry 
+		hungry = false; //turns off hungry 
 
 		if (Input.GetKeyDown (KeyCode.M)) {
 			minutesLeft -= 3;
@@ -856,12 +858,12 @@ public class TextController : MonoBehaviour {
 
 	void church_1 () //enter the church
 	{
-		if (hungry == true) //if hungry, you faint
+		if (hungry) //if hungry, you faint
 		{
 			text.text = "You climb the stairs and your stomach growls. " +
 			"LOUDLY. D'oh! You forgot to eat. Well, too late now! You " +
 			"step into the church. As you lay eyes on all the guests, your " +
-			"head starts to spin. Your stomach rumbles again. The room goes " +
+			"head starts to spin. Your stomach rumbles again. The church goes " +
 			"dark...\n\n" +
 			"Press C to continue.";
 
@@ -875,7 +877,7 @@ public class TextController : MonoBehaviour {
 			"and step into the church. A sea of faces turns towards you, but " +
 			"you have eyes only for your intended. As music plays, you walk down " +
 			"the aisle. You clasp your intended's hand, smile, and turn towards " +
-			"the officiant, ready to say 'I do!'\n\n" +
+			"the officiant.\n\n" +
 			"Press C to continue";
 
 			if (Input.GetKeyDown (KeyCode.C)) {
@@ -891,7 +893,7 @@ public class TextController : MonoBehaviour {
 		text.text = "You open your eyes, flat on your back. " +
 		"You find your intended staring " +
 		"you in the face. Beyond that are several relatives, looking " +
-		"concerned. Beyond that are several naked churubs, gazing down from " +
+		"concerned. Beyond that are several naked cherubs, gazing down from " +
 		"the ceiling.\n" +
 		"How embarrassing... you fainted from hunger at your own wedding!\n\n" + 
 		"Press P to pick up your dignity and get on with it already.";
@@ -905,9 +907,9 @@ public class TextController : MonoBehaviour {
 	{
 		text.text = "You get up, brush yourself off, and clasp your intended's " +
 			"hand. You receive a few pats on the back, then everyone else " +
-			"returns to their seats. As music plays, you walk down " +
+			"returns to their seats. As music plays, you (shakily) walk down " +
 			"the aisle, hand in hand with your intended. You approach " +
-			"the officiant, ready to say 'I do!'\n\n" +
+			"the officiant.\n\n" +
 			"Press C to continue";
 
 			if (Input.GetKeyDown (KeyCode.C)) {
@@ -920,7 +922,7 @@ public class TextController : MonoBehaviour {
 	void end_3 () //you get married!
 
 	{
-		text.text = "Congratulations! You are married.\n\n" + 
+		text.text = "Congratulations! You are now married to the love of your life!\n\n" + 
 		"Press P to play again.";
 
 		if (Input.GetKeyDown (KeyCode.P)) {
