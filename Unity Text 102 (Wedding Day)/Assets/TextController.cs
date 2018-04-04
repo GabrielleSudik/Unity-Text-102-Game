@@ -73,6 +73,8 @@ public class TextController : MonoBehaviour {
 			bed_1 ();
 		} else if (myState == States.bedroom_0) {
 			bedroom_0 ();
+		}	else if (myState == States.apartment_0) {
+			apartment_0 ();
 		} else if (myState == States.closet_0) {
 			closet_0 ();
 		} else if (myState == States.bathroom_0) {
@@ -178,6 +180,8 @@ public class TextController : MonoBehaviour {
 		"Press W to get out of bed.\n" +
 		"Press the space bar to snooze for 10 minutes.\n" +
 		"Press S to turn off your alarm completely and go back to sleep.";
+
+		hungry = true;
 
 		if (Input.GetKeyDown(KeyCode.W)) {
 			myState = States.bedroom_0;
@@ -334,8 +338,8 @@ public class TextController : MonoBehaviour {
 		text.text = "*Tinkling sound*\t" +
 		"*Flushing toilet sound*\n\n" +
 		"Ah, that's better! Time to wash up. Do you want to take " +
-		"a quick shower or a long bubble bath?\n\n" +
-		"Press S to shower.\nPress B to take a bubble bath";
+		"a quick shower or a nice, long bubble bath?\n\n" +
+		"Press S to shower.\nPress B to take a nice, long bubble bath.";
 
 		if (Input.GetKeyDown(KeyCode.S)) {
 			myState = States.bathroom_2;
@@ -665,8 +669,8 @@ public class TextController : MonoBehaviour {
 		"You have " + minutesLeft + " minutes " +
 		"left until the ceremony.\n\n" +
 		"Press E if you're done gaming and are ready to leave.\n" +
-		"Press V if you want to play Just. One. More. Turn. ... Again ... " +
-		"Seriously. Only one more turn, you promise.";
+		"Press V if you want to play Just. One. More. Turn.\n\tSeriously. " +
+		"You promise. Just one more...";
 
 		if (Input.GetKeyDown(KeyCode.V)){
 			myState = States.video_1;
@@ -910,7 +914,7 @@ public class TextController : MonoBehaviour {
 			"returns to their seats. As music plays, you (shakily) walk down " +
 			"the aisle, hand in hand with your intended. You approach " +
 			"the officiant.\n\n" +
-			"Press C to continue";
+			"Press C to continue.";
 
 			if (Input.GetKeyDown (KeyCode.C)) {
 			myState = States.end_3;
@@ -1084,7 +1088,7 @@ public class TextController : MonoBehaviour {
 
 		if (Input.GetKeyDown (KeyCode.M)) { //you'll order your donuts then leave
 			minutesLeft -= 3;
-			myState = States.order_0;
+			myState = States.order_1;
 		}
 	}
 
@@ -1130,19 +1134,20 @@ public class TextController : MonoBehaviour {
 		"they are equally enchanted with you. You don't want it to end.\n\n" +
 		"Press C to keep chatting.";
 
+		//this loops until you run out of time
 		if (Input.GetKeyDown (KeyCode.C)) { 				
 			minutesLeft -=10;
 			myState = States.donut_5;
 		}
 	}
 
-	void end_on_date ()
+	void end_on_date () //runs out of time while on a date
 	{
 		text.text = "Finally, the part of your brain that has not fallen " +
 		"completely in love with the person across from you remembers " +
 		"who you were SUPPOSED to be with today. Then you realize that: " +
 		"No. THIS is who you are supposed to be with. " +
-		"So you mentally whisper a quick farewell, and stay right where you are.\n\n" +
+		"So you mentally whisper a quick farewell to your intended, and stay right where you are.\n\n" +
 		"Press P to play again.";
 
 			if (Input.GetKeyDown(KeyCode.P)) {
